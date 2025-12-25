@@ -28,6 +28,20 @@ TariffDao {
         }
         return list;
     }
+    public static void update(Tariff t) throws Exception {
+        try (Connection c = Db.connect();
+             PreparedStatement ps = c.prepareStatement(
+                     "UPDATE tariffs SET direction=?, price=?, cargo_type=?, max_weight=? WHERE id=?")) {
+
+            ps.setString(1, t.direction);
+            ps.setDouble(2, t.price);
+            ps.setString(3, t.cargoType);
+            ps.setInt(4, t.maxWeight);
+            ps.setInt(5, t.id);
+
+            ps.executeUpdate();
+        }
+    }
 
     public static void insert(Tariff t) throws Exception {
         try (Connection c = Db.connect();
@@ -42,6 +56,8 @@ TariffDao {
             ps.executeUpdate();
         }
     }
+
+
 
     public static void delete(int id) throws Exception {
         try (Connection c = Db.connect();
